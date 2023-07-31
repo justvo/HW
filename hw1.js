@@ -1,6 +1,4 @@
-//find max, min, sum
 function maxN(num){
-
     let max = num[0]; 
     for(let i = 1; i < num.length; i++ ){
         if (!isNaN(num[i])){
