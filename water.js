@@ -5,26 +5,27 @@ function countWater(mountains){
         console.log("i "+ i);
         let flagState = 0;
         let flagFin = 0;
+        let countF = 0;
         let count =0;
         for (let j = 0; j<mountains.length; j++){
+
             if (mountains[j] < i ){
-                if(!flagState){
-                count =0;
-             }
-                
-                flagState = 1;
-                flagFin = 1;
-            
+                if(countF){
+                count +=1;
+                }
+                if(flagState ){
+                    flagFin = 1;
+                    flagState = 0
+                }
             }else {
-                flagState = 0;
+                countF = 1;
+                flagState = 1;
                 if (flagFin){
                     flagFin = 0;
                     water += count;
+                    count = 0;
                 }
             }
-            if(flagState){
-                count +=1;
-            }   
             console.log("count1 ="+ count);
         }
         console.log("count ="+ count);
@@ -34,7 +35,7 @@ function countWater(mountains){
     return water;
 }
 
-let mou =  [2, 2, 1, 2, 2, 3, 0, 1, 2];
+let mou =  [2, 1, 5, 0, 3, 4, 7, 2, 3, 1, 8];
 result = countWater(mou);
 console.log(result) 
 
