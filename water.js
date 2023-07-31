@@ -2,24 +2,24 @@ function countWater(mountains){
     let highMou = Math.max.apply(null, mountains);
     let water = 0;
     for (let i = 1; i<=highMou; i++){
-        let flagState = 0;
-        let flagFin = 0;
-        let countF = 0;
+        let flagWater = 0;
+        let flagWall = 0;
+        let ifStartFromWater = 0;
         let count =0;
         for (let j = 0; j<mountains.length; j++){
             if (mountains[j] < i ){
-                if(countF){
+                if(ifStartFromWater){
                 count +=1;
                 }
-                if(flagState ){
-                    flagFin = 1;
-                    flagState = 0
+                if(flagWater ){
+                    flagWall = 1;
+                    flagWater = 0
                 }
             }else {
-                countF = 1;
-                flagState = 1;
-                if (flagFin){
-                    flagFin = 0;
+                ifStartFromWater = 1;
+                flagWater = 1;
+                if (flagWall){
+                    flagWall = 0;
                     water += count;
                     count = 0;
                 }
