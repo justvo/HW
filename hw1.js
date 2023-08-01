@@ -8,6 +8,7 @@ function maxN(num){
     }
     return max;
 }
+
 function minN(num){
     let less = num[0];
     for(let i = 1; i < num.length; i++ ){
