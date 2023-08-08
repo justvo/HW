@@ -14,6 +14,9 @@ class Tamagochi{
             this.getDesire();
           }, 30000);
     }
+    ownCharac(){
+        this.checkch();
+    }
     getDesire(){
         for (const [k, v] of Object.entries(this.characteristics)) {
             if (v <= 40 ) {
@@ -29,9 +32,7 @@ class Tamagochi{
         }
         this.writeStatus();
     }
-    subtract(){
 
-    }
     writeStatus(){
         console.log(this.name + " status");
         console.log("helth = " + this.characteristics.helth );
@@ -128,6 +129,7 @@ class Tamagochi{
                 this.wash();
                 break;
         }
+        console.log("You fulfilled my wish, thank you");
     }
  
     checkch(){
@@ -165,7 +167,7 @@ rl.on('line', (line) => {
         case"w":
             mytamagochi.wash();
             break;
-        case"fw":
+        case"t":
             mytamagochi.fulfillAWish();
             break;
         }
