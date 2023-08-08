@@ -215,7 +215,10 @@ rl.on('line', (line) => {
             break;
         case"n":
             exitProgram();
-            break;    
+            break; 
+        case"ws":
+            mytamagochi.writeStatus();
+            break;         
         }
 
 });
