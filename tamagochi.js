@@ -2,6 +2,7 @@
 class Tamagochi{
     constructor(name) {
         this.name = name
+        this.live = 1;
         this.characteristics ={
         "helth" : 100,
         "desire" : "nothing",
@@ -11,26 +12,50 @@ class Tamagochi{
         "purity" : 100 
         };
         this.interval = setInterval(() => {
-            this.getDesire();
+            this.writeStatus();
+            this.changeCharac()
+
           }, 30000);
+          this.interval2 = setInterval(() => {
+            this.getDesire();
+            this.checkch();
+          }, 10);
     }
-    ownCharac(){
-        this.checkch();
+    changeCharac(){
+        for (const k in this.characteristics){
+            this.characteristics[k] -= 5;
+        }
+    }
+    restart(){
+        this.characteristics ={
+            "helth" : 100,
+            "desire" : "nothing",
+            "happiness" : 100,
+            "satiety" : 100,
+            "vigor" : 100,
+            "purity" : 100 
+            };
+           
+            this.interval = setInterval(() => {
+                this.writeStatus();
+                this.changeCharac()
+              }, 30000);
+            this.interval2 = setInterval(() => {
+                this.getDesire();
+                this.checkch();
+              }, 10);
+
+
     }
     getDesire(){
         for (const [k, v] of Object.entries(this.characteristics)) {
-            if (v <= 40 ) {
+            if (v <= 80 ) {
                 this.characteristics.desire = k;
+                break;
             }else{
                 this.characteristics.desire = "nothing";
             }
-            if(k != "desire"){
-                this.characteristics[k] -= 10;
-            }
-            
-            
         }
-        this.writeStatus();
     }
 
     writeStatus(){
@@ -41,9 +66,11 @@ class Tamagochi{
         console.log("satiety = "+ this.characteristics.satiety);
         console.log("vigor = "+ this.characteristics.vigor);
         console.log("purity = "+ this.characteristics.purity);
+        
     }
 
     play(){
+
         if (this.characteristics.happiness >= 95){
             this.characteristics.helth -= 5 ;
             this.characteristics.purity -= 5;
@@ -52,10 +79,10 @@ class Tamagochi{
             console.log("I don't want to play anymore"); 
         }else {
             this.characteristics.happiness += 10;
+            this.checkch();
+            this.writeStatus();
+            console.log("We just played and now I'm happy");        
         }
-        this.checkch();
-        this.writeStatus();
-        console.log("We just played and now I'm happy");        
     }
 
     feed(){
@@ -65,10 +92,10 @@ class Tamagochi{
         }else {
             this.characteristics.satiety += 10;
             this.characteristics.helth+=10;
+            this.checkch();
+            this.writeStatus();
+            console.log("You have fed me, I am fuller, thank you."); 
         }
-        this.checkch();
-        this.writeStatus();
-        console.log("You have fed me, I am fuller, thank you."); 
     }
 
     heal(){
@@ -80,10 +107,10 @@ class Tamagochi{
         }else {
             this.characteristics.satiety += 10;
             this.characteristics.helth+=10;
+            this.checkch();
+            this.writeStatus();
+            console.log("You healed me, thank you."); 
         }
-        this.checkch();
-        this.writeStatus();
-        console.log("You healed me, thank you."); 
     }
 
     wash(){
@@ -93,10 +120,10 @@ class Tamagochi{
         }else {
             this.characteristics.purity += 10;
             this.characteristics.helth +=10;
+            this.checkch();
+            this.writeStatus();
+            console.log("I'm clean now, thank you"); 
         }
-        this.checkch();
-        this.writeStatus();
-        console.log("I'm clean now, thank you"); 
     }
     
     sleep(){
@@ -106,10 +133,10 @@ class Tamagochi{
         }else {
             this.characteristics.vigor += 10;
             this.characteristics.helth +=10;
+            this.checkch();
+            this.writeStatus();
+            console.log("I'm clean now, thank you"); 
         }
-        this.checkch();
-        this.writeStatus();
-        console.log("I'm clean now, thank you"); 
     }
     fulfillAWish(){
         switch(this.characteristics.desire){
@@ -136,11 +163,24 @@ class Tamagochi{
         for (const [k, v] of Object.entries(this.characteristics)) {
             if (v > 100) {
                 this.characteristics[k] = 100;
+            }else if(v<=0){
+                clearInterval(this.interval);
+                clearInterval(this.interval2);
+                this.live = 0;
+                console.log(`My ${k} has reached 0, so you lost, do you want to repeat the game?(y/n)  `)
+
+
             }
+
         }
     }
 
 }
+function exitProgram() {
+    console.log('Exiting program...');
+    process.exit();
+}
+
 let mytamagochi = new Tamagochi("Alex");
 
 const readline = require('readline');
@@ -167,9 +207,15 @@ rl.on('line', (line) => {
         case"w":
             mytamagochi.wash();
             break;
-        case"t":
+        case"fw":
             mytamagochi.fulfillAWish();
             break;
+        case"y":
+            mytamagochi.restart();
+            break;
+        case"n":
+            exitProgram();
+            break;    
         }
 
 });
